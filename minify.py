@@ -1,3 +1,4 @@
+import sys, getopt
 import re
 
 
@@ -23,17 +24,30 @@ def removeSpace(content):
     return content.replace(' ','')
 
 
-file = open('style.css', 'r')
+def main():
+    input_file = sys.argv[1]
+    output_file = input_file.strip().split('.')[0]
+    file_type = input_file.strip().split('.')[1]
 
-if file.mode == 'r':
-    content = file.read()
+    file = open(input_file, 'r')
 
-    minified_content = removeSpace(
-        removeNewLine(
-            removeWhitespace(
-                removeComment(content)
+    if file.mode == 'r':
+        content = file.read()
+
+        minified_content = removeSpace(
+            removeNewLine(
+                removeWhitespace(
+                    removeComment(content)
+                )
             )
         )
-    )
 
-    print(minified_contents)
+        new_file = open(output_file + '.min.' + file_type, 'w')
+        new_file.write(minified_content)
+        new_file.close()
+
+    if sys.argv[1] == 'help':
+        print('Help menu')
+
+if __name__ == '__main__':
+    main()
